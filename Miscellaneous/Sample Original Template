@@ -1,0 +1,292 @@
+<?xml version="1.0" encoding="utf-8"?>
+<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform" version="1.0">
+<xsl:output method="html" encoding="utf-8"/>
+
+<xsl:template match="/">
+<html>
+<head>
+<link href="https://fonts.googleapis.com/css?family=Roboto:400,700" rel="stylesheet" />  
+<style>
+H2 { font-size: 13pt; }
+.body { }
+.ingress { }
+.articletitle { }
+.matched { }
+.articleComment { }
+.topMenuSub { }
+.categorylink { }
+.categorylink a:link { }
+.categorylink a:visited { }
+.categorylink a:hover { }
+.categoryname { }
+.date { }
+.source { }
+.articletitle a:link { }
+.articletitle a:visited { }
+.articletitle a:hover { }
+a:link { }
+a:visited { }
+a:hover { }
+.more a:link { }
+.more a:visited { }
+.more a:hover { }
+
+
+</style>
+</head>
+<body class="body" style="background-color: #EEEEEE; margin-top: 0px; margin-left: 0px; padding-left: 0px; padding-top: 0px;">
+<center>
+<table cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff" style="border: #EEEEEE solid 0px; margin-top: 0px; margin-right: 0px; margin-left: 0px; margin-bottom: 0px; padding: 0px; width: 800px;">
+<tr>
+<td bgcolor="#ffffff">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" align="left" style="background-color:#ffffff;" bgcolor="#ffffff">
+
+<tr valign="bottom">
+<td align="left" valign="top" bgcolor="#ffffff" >
+<a href="https://www.idfcmf.com/" target="_blank">
+<img src="https://i.ibb.co/DgS29Tq/Banner1.png" border="0" alt="idfcmf logo" /></a>
+</td>
+</tr>
+</table>
+</td></tr>
+
+
+
+
+<tr><td bgcolor="#ffffff">
+<table border="0" cellpadding="0" width="100%" cellspacing="0" align="left" bgcolor="#ffffff">
+<tr valign="top"><td align="left" valign="top" bgcolor="#ffffff">
+<table border="0" cellpadding="0" cellspacing="0" width="100%" bgcolor="#ffffff">
+<tr>
+
+
+<td bgcolor="#534E52" align="left" valign="top" width="220">
+<table border="0" bgcolor="#534E52" cellpadding="0" cellspacing="0" width="100%" align="left" >
+
+
+<xsl:variable name="cnt" select="count(newsletter/category)"/>
+<xsl:for-each select="newsletter/category">
+<xsl:if test="string-length(@categoryName) > 0">
+<xsl:if test="count(article) > 0 or @isGadget = 'True'">
+<tr valign="middle"><td align="left" height="35" OnMouseover="this.style.background='#ED9649'" OnMouseout="this.style.background='#534E52'" style="padding: 5px 10px;border-bottom: 1px solid #757575; ">
+<a class="categorylink" style="font-size: 12px; font-family: 'Roboto', Arial, sans-serif;; color: #ffffff; font-weight: bold; text-decoration: none;line-height: 18px;text-transform: uppercase;" OnMouseOver="this.style.textDecoration='none'; this.style.color='#ffffff'" OnMouseOut="this.style.textDecoration='none';this.style.color='#ffffff'">
+<xsl:attribute name="href">
+<xsl:text disable-output-escaping="yes">#</xsl:text><xsl:value-of select="@categoryId"/>
+</xsl:attribute>
+
+<xsl:value-of select="@categoryName"/>
+</a>
+<xsl:if test="not(position() = $cnt)">
+<xsl:text disable-output-escaping="yes">  </xsl:text><xsl:text disable-output-escaping="yes">  </xsl:text>
+
+</xsl:if>
+</td></tr>
+</xsl:if>
+</xsl:if>
+</xsl:for-each>
+
+
+</table>
+</td>
+
+<td style="padding-left: 10px; padding-right: 10px;" bgcolor="#ffffff" align="left" valign="top">
+<xsl:apply-templates/>
+
+
+
+
+
+</td></tr>
+
+
+</table>
+</td>
+
+</tr>
+</table>
+</td>
+</tr>
+
+</table>
+</center>
+</body>
+</html>
+</xsl:template>
+
+<xsl:template match="/newsletter">
+<xsl:apply-templates select="summary"/>
+<xsl:apply-templates select="category"/>
+<xsl:apply-templates select="uncategorised"/>
+<xsl:apply-templates select="endnote"/>
+</xsl:template>
+
+<xsl:template match="summary">
+<table cellspacing="0" cellpadding="0" border="0" width="100%" bgcolor="#ffffff">
+<tr>
+<td bgcolor="#ffffff"><span class="matched" style="font-size: 13px; font-family: 'Roboto', Arial, sans-serif;; color: #333333; font-weight: normal;"><xsl:value-of select="summary" disable-output-escaping="yes" /></span></td>
+</tr>
+</table>
+</xsl:template>
+
+<xsl:template match="endnote">
+<table cellspacing="0" cellpadding="0" border="0" width="100%" bgcolor="#ffffff">
+<tr>
+<td bgcolor="#ffffff"><span class="matched" style="font-size: 12px; font-family: 'Roboto', Arial, sans-serif;; color: #333333; font-weight: normal;"><xsl:value-of select="endnote" disable-output-escaping="yes" /></span></td>
+</tr>
+</table>
+</xsl:template>
+
+<xsl:template match="uncategorised">
+<xsl:if test="count(article) > 0">
+<table cellspacing="0" cellpadding="0" border="0" width="100%" bgcolor="#ffffff">
+
+<tr>
+<td>
+<xsl:for-each select="article">
+<xsl:apply-templates select="."/>
+<table cellpadding="0" cellspacing="0" border="0"><tr><td height="13" bgcolor="#ffffff"><xsl:text disable-output-escaping="yes"> &amp;nbsp;</xsl:text></td></tr></table>
+</xsl:for-each>
+</td></tr>
+
+<tr><td height="15" bgcolor="#ffffff"><xsl:text disable-output-escaping="yes"> &amp;nbsp;</xsl:text></td></tr>
+
+</table>
+</xsl:if>
+</xsl:template>
+
+<xsl:template match="category">
+<xsl:if test="count(article) > 0 or @isGadget = 'True'">
+<a>
+<xsl:attribute name="id"><xsl:value-of select="@categoryId"/></xsl:attribute>
+<xsl:attribute name="name"><xsl:value-of select="@categoryId"/></xsl:attribute>
+<xsl:attribute name="isgadget"><xsl:value-of select="@isGadget"/></xsl:attribute>
+</a>
+
+<table cellspacing="0" cellpadding="0" border="0" width="100%" bgcolor="#ffffff">
+
+
+<tr><td height="15" bgcolor="#ffffff"><xsl:text disable-output-escaping="yes"> &amp;nbsp;</xsl:text></td></tr>
+
+<tr><td bgcolor="#ffffff">
+<span class="categoryname" style="font-size: 18px; color: #000000; font-family: 'Roboto', Arial, sans-serif;; font-weight: 400;line-height: 18px;"><xsl:value-of select="@categoryName"/></span>
+</td>
+</tr>
+
+<tr><td height="15" bgcolor="#ffffff"><xsl:text disable-output-escaping="yes"> &amp;nbsp;</xsl:text></td></tr>
+
+
+<xsl:if test="count(article) > 0">
+<tr>
+<td bgcolor="#ffffff">
+<xsl:for-each select="article">
+<xsl:apply-templates select="."/>
+
+<table cellpadding="0" cellspacing="0" border="0"><tr><td height="13" bgcolor="#ffffff"><xsl:text disable-output-escaping="yes"> &amp;nbsp;</xsl:text></td></tr></table>
+
+</xsl:for-each>
+</td></tr>
+</xsl:if>
+<xsl:if test="@isGadget = 'True'">
+<tr>
+<td bgcolor="#ffffff">
+<xsl:if test="url != ''">
+<img>
+<xsl:attribute name="src"><xsl:value-of select="url"/></xsl:attribute>
+</img>
+</xsl:if>
+<xsl:if test="cloud != ''">
+<div style="padding: 0.43em; font-family: Verdana,Arial,Helvetica,sans-serif; text-align: center; font-size: 12px; color: #000000;">
+<xsl:value-of disable-output-escaping="yes" select="cloud" />
+</div>
+</xsl:if>
+</td></tr>
+</xsl:if>
+</table>
+</xsl:if>
+</xsl:template>
+
+<xsl:template match="article">
+<table width="100%" cellspacing="0" cellpadding="0" border="0" bgcolor="#ffffff">
+<tr align="left" valign="top">
+<td bgcolor="#ffffff">
+
+<xsl:if test="(language = 'ar')"><xsl:attribute name="align">right</xsl:attribute></xsl:if>
+<xsl:if test="language != 'ar'"><xsl:attribute name="align">left</xsl:attribute></xsl:if>
+
+<div><a class="articletitle" style="font-size: 14px; font-family: 'Roboto', Arial, sans-serif;; color: #000000; font-weight: bold; text-decoration: none; line-height: 18px;" OnMouseOver="this.style.textDecoration='underline'; this.style.color='#000000'" OnMouseOut="this.style.textDecoration='none';this.style.color='#000000'">
+<xsl:attribute name="href"><xsl:value-of select="url" />
+</xsl:attribute>
+<xsl:attribute name="target">_blank</xsl:attribute>
+<xsl:value-of select="title" disable-output-escaping="yes" />
+</a>
+
+<xsl:text disable-output-escaping="yes"> &amp;nbsp;</xsl:text>
+
+ <a>
+       <xsl:attribute name="href">http://www.facebook.com/sharer.php?u=<xsl:value-of select="substring-after(substring-before(url, '&amp;uId='), '?url=')"/></xsl:attribute>
+       <xsl:attribute name="target">_blank</xsl:attribute>
+        <img style="vertical-align: middle;"><xsl:attribute name="src">http://meltwaternews.com/ext/a3logics/US/Images/fb-c2.png</xsl:attribute>
+    <xsl:attribute name="border">0</xsl:attribute>
+  </img>
+     </a>
+
+<xsl:text disable-output-escaping="yes"> &amp;nbsp;</xsl:text>
+
+     <a>
+       <xsl:attribute name="href">http://twitter.com/home?status=<xsl:value-of select="substring-after(substring-before(url, '&amp;uId='), '?url=')"/></xsl:attribute>
+       <xsl:attribute name="target">_blank</xsl:attribute>
+        <img style="vertical-align: middle;"><xsl:attribute name="src">http://meltwaternews.com/ext/a3logics/US/Images/tw-c2.png</xsl:attribute>
+    <xsl:attribute name="border">0</xsl:attribute>
+  </img>
+     </a>
+
+<xsl:text disable-output-escaping="yes"> &amp;nbsp;</xsl:text>
+
+<a><xsl:attribute name="href">https://www.linkedin.com/shareArticle?mini=true&amp;url=<xsl:value-of select="substring-after(substring-before(url, '&amp;uId='), '?url=')"/></xsl:attribute>
+          <xsl:attribute name="target">_blank</xsl:attribute>
+       <img style="vertical-align: middle;">
+           <xsl:attribute name="src">http://meltwaternews.com/ext/a3logics/US/Images/ldn-c2.png</xsl:attribute>
+           <xsl:attribute name="border">0</xsl:attribute>
+       </img></a> 
+
+
+</div>
+
+
+<div style="padding-top: 2px; padding-bottom: 3px;" ng-model="checked" ng-init="checked=true">
+<span class="source" style="font-size: 13px; font-family: 'Roboto', Arial, sans-serif;; color: #333333; font-weight: normal; line-height: 18px;">
+<xsl:value-of select="source" disable-output-escaping="yes" />
+<xsl:text> - </xsl:text>
+
+<xsl:if test="(month='01')">Jan</xsl:if>
+<xsl:if test="(month='02')">Feb</xsl:if>
+<xsl:if test="(month='03')">Mar</xsl:if>
+<xsl:if test="(month='04')">Apr</xsl:if>
+<xsl:if test="(month='05')">May</xsl:if>
+<xsl:if test="(month='06')">Jun</xsl:if>
+<xsl:if test="(month='07')">Jul</xsl:if>
+<xsl:if test="(month='08')">Aug</xsl:if>
+<xsl:if test="(month='09')">Sep</xsl:if>
+<xsl:if test="(month='10')">Oct</xsl:if>
+<xsl:if test="(month='11')">Nov</xsl:if>
+<xsl:if test="(month='12')">Dec</xsl:if>
+<xsl:text> </xsl:text>
+<xsl:value-of select="day"/>
+<xsl:text>, </xsl:text>
+<xsl:value-of select="year"/>
+</span>
+</div>
+
+<div class="ingress" style="font-size: 13px; font-family: 'Roboto', Arial, sans-serif;; color: #333333; font-weight: normal; line-height: 18px;"><xsl:value-of select="ingress" disable-output-escaping="yes" /></div>
+
+<div class="matched" style="font-size: 13px; font-family: 'Roboto', Arial, sans-serif; color: #333333; font-weight: normal; line-height: 18px;"><xsl:value-of select="matchedSentences" disable-output-escaping="yes"/></div>
+
+<div class="articleComment" style="font-size: 13px; font-family: 'Roboto', Arial, sans-serif; color: #333333; font-weight: normal; line-height: 18px;"><xsl:value-of select="comment" disable-output-escaping="yes"/></div>
+
+
+</td>
+</tr>
+</table>
+</xsl:template>
+
+</xsl:stylesheet>
